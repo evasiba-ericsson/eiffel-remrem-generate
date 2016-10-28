@@ -46,6 +46,7 @@ public class CLI implements CommandLineRunner {
         if (CLIOptions.hasParsedOptions())
             handleOptions();
     }
+    
     /**
      * @param commandLine
      */
@@ -71,7 +72,7 @@ public class CLI implements CommandLineRunner {
         handleLogging(commandLine);
         if (commandLine.hasOption("h")) {
             System.out.println("You passed help flag.");
-            CLIOptions.help();
+            CLIOptions.help(1);
         } else if (commandLine.hasOption("f")) {
             handleFileArgs(commandLine);
         } else if (commandLine.hasOption("json")) {

@@ -8,16 +8,24 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
 
+import com.ericsson.eiffel.remrem.generate.config.PropertiesConfig;
+
 public class CLIOptions {
     private static CommandLine commandLine = null;
     private static Options options = null;
+    //Used for testing purposes
+    private static int testErrorCode = 0;
 
-    public static CommandLine getCommandLine() {
+    public static int getErrorCode() {
+		return testErrorCode;
+	}
+
+	public static void setErrorCode(int errorCode) {
+		testErrorCode = errorCode;
+	}
+
+	public static CommandLine getCommandLine() {
         return commandLine;
-    }
-
-    public static void setCommandLine(CommandLine commandLine) {
-        CLIOptions.commandLine = commandLine;
     }
 
     /**
@@ -48,13 +56,25 @@ public class CLIOptions {
     /**
      * Prints the help for this application and exits.
      */
-    public static void help() {
+    public static void help(int errorCode) {
         // This prints out some help
         HelpFormatter formater = new HelpFormatter();
         formater.printHelp("java -jar", options);
-        System.exit(1);
+        exit(errorCode);
     }
 
+    /**
+     * Wrapper to call system exit making class easier to test.
+     * @param errorCode
+     */
+    public static void exit(int errorCode) {
+    	boolean testMode = Boolean.getBoolean(PropertiesConfig.TEST_MODE);
+    	if (testMode)
+    		testErrorCode = errorCode;
+    	else
+    		System.exit(errorCode);
+    }
+    
     /**
      * Parse the given arguments and act on them
      * 
@@ -67,8 +87,8 @@ public class CLIOptions {
         try {
             commandLine = parser.parse(options, args);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            help();
+            System.out.println(e.getMessage());            
+            help(CLIExitCodes.getExceptionCode(e));
         }
     }
 

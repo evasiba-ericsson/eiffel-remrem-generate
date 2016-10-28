@@ -7,33 +7,40 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import static org.junit.Assert.*;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import com.ericsson.eiffel.remrem.generate.config.PropertiesConfig;
+
 
 @RunWith(SpringRunner.class)
 public class CliOptionsUnitTests {
 	private PrintStream console;
-    private ByteArrayOutputStream bytes;
+	private ByteArrayOutputStream bytes;
 
-	
 	@Before public void setUp() throws Exception {
-		  bytes   = new ByteArrayOutputStream();
-	      console = System.out;
-	      System.setOut(new PrintStream(bytes));
+		String key = PropertiesConfig.TEST_MODE;
+		System.setProperty(key, "true");
+		//Switch std out to another stream
+		bytes   = new ByteArrayOutputStream();		  
+		console = System.out;
+		System.setOut(new PrintStream(bytes));
 	}
-	
-	 @After
-	   public void tearDown() {
-	      System.setOut(console);
-	   }
-	
+
+	@After
+	public void tearDown() {
+		System.clearProperty(PropertiesConfig.TEST_MODE);
+		System.setOut(console);
+	}	
+
 	@Test
-    public void testParseEmptyCLIOptionsFails() throws Exception {
-		CLIOptions cliOptions = new CLIOptions();
-		String[] args = new String[0];
-	    
-	
-	         cliOptions.parse(args);
-	    int i = 0;
-		
+	public void testParseEmptyCLIOptionsFails() throws Exception {	
+		String[] args = new String[0];	    
+
+		CLIOptions.parse(args);
+		assertEquals(CLIExitCodes.CLI_MISSING_OPTION_EXCEPTION,
+				CLIOptions.getErrorCode());
+		int i = 0;
+
 	}
 }
