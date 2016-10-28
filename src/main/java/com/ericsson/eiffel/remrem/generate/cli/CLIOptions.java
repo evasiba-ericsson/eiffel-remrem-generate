@@ -82,5 +82,4 @@ public class CLIOptions {
             return false;
         return commandLine.getOptions().length > 0;
     }
-
 }
