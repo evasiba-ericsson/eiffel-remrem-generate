@@ -202,8 +202,8 @@ public class CLI implements CommandLineRunner {
         boolean testMode = Boolean.getBoolean(PropertiesConfig.TEST_MODE);
     	if (testMode && msgServices.length>0)
     		return msgServices[0];
-        
-        System.out.println("No protocol service has been found registered.");        
+
+    	System.out.println("No protocol service has been found registered.");        
         CLIOptions.exit(CLIExitCodes.MESSAGE_PROTOCOL_NOT_FOUND);
         return null;
     }

@@ -42,7 +42,15 @@ public class CliOptionsUnitTests {
 		int code = CLIExitCodes.CLI_MISSING_OPTION_EXCEPTION;
 		assertTrue(CLIOptions.getErrorCodes().contains(code));
 	}
+	
+	@Test
+	public void testParseAllCLIOptions() throws Exception {
+		String[] args = {"-t", "mt", "-f", "filename"};	    
 
+		CLIOptions.parse(args);
+		int i = 0;
+	}
+	
 	@Test
 	public void testHelpOptionOnlyWorks() throws Exception {
 		String[] args = {"-h"};

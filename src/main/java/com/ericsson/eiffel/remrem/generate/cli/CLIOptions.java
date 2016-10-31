@@ -16,6 +16,7 @@ public class CLIOptions {
     private static CommandLine commandLine = null;
     private static Options options = null;
     //Used for testing purposes
+
     private static ArrayList<Integer> testErrorCodes = new ArrayList<>();
 
     public static ArrayList getErrorCodes() {
@@ -29,7 +30,7 @@ public class CLIOptions {
 	public static void cleanErrorCodes() {
 		testErrorCodes.clear();
 	}
-	
+
 	public static CommandLine getCommandLine() {
         return commandLine;
     }
