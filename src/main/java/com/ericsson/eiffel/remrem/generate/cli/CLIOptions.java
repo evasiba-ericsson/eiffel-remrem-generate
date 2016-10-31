@@ -35,10 +35,13 @@ public class CLIOptions {
      */
     public static Options createCLIOptions() {
         options = new Options();
+        OptionGroup typeGroup = new OptionGroup();
         Option msgTypeOpt = new Option("t", "message_type", true, "message type");
-        msgTypeOpt.setRequired(true);
-        options.addOption(msgTypeOpt);
-        options.addOption("h", "help", false, "show help.");
+        Option helpOpt = new Option("h", "help", false, "show help.");
+        typeGroup.addOption(helpOpt);
+        typeGroup.addOption(msgTypeOpt);
+        typeGroup.setRequired(true);
+        options.addOption(msgTypeOpt);        
         options.addOption("r", "response_file", true, "file to store the response in, optional");
         options.addOption("d", "debug", false, "enable debug traces");
         options.addOption("mp", "messaging_protocol", true,
@@ -47,6 +50,7 @@ public class CLIOptions {
         OptionGroup group = new OptionGroup();
         group.addOption(new Option("f", "content_file", true, "message content file"));
         group.addOption(new Option("json", "json_content", true, "json content"));
+        group.addOption(helpOpt);
         group.setRequired(true);
         options.addOptionGroup(group);
 

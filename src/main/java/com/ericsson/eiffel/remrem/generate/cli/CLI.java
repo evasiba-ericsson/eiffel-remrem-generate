@@ -41,7 +41,12 @@ public class CLI implements CommandLineRunner {
     @Autowired
     private MsgService[] msgServices;
 
-    @Override
+    public CLI(MsgService[] msgServices) {
+		super();
+		this.msgServices = msgServices;
+	}
+
+	@Override
     public void run(String... args) throws Exception {
         if (CLIOptions.hasParsedOptions())
             handleOptions();
@@ -103,7 +108,7 @@ public class CLI implements CommandLineRunner {
             return new String(fileBytes);
         } catch (IOException e) {
             e.printStackTrace();
-            System.exit(-2);
+            CLIOptions.exit(CLIExitCodes.CLI_READ_FILE_FAILED);
         }
         return null;
     }
@@ -121,7 +126,10 @@ public class CLI implements CommandLineRunner {
                 jsonContent = bufferReader.readLine();
             } catch (IOException e) {
                 e.printStackTrace();
-                System.exit(5);
+                CLIOptions.exit(CLIExitCodes.READ_JSON_FROM_CONSOLE_FAILED);
+                // In unit tests we do not do system exit but it still needs
+                // to return here.
+                return;
             }
 
         }
@@ -160,7 +168,7 @@ public class CLI implements CommandLineRunner {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            System.exit(-1);
+            CLIOptions.exit(CLIExitCodes.HANDLE_JSON_STRING_FAILED);
         }
     }
 
@@ -190,8 +198,8 @@ public class CLI implements CommandLineRunner {
             }
         }
 
-        System.out.println("No protocol service has been found registered.");
-        System.exit(-3);
+        System.out.println("No protocol service has been found registered.");        
+        CLIOptions.exit(CLIExitCodes.MESSAGE_PROTOCOL_NOT_FOUND);
         return null;
     }
 }
